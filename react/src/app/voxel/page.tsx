@@ -1,6 +1,6 @@
 "use client";
 
-import { Canvas } from "@react-three/fiber";
+import { Canvas, ThreeEvent } from "@react-three/fiber";
 import { useRef, useState } from "react";
 import { Mesh, Vector3 } from "three";
 
@@ -66,8 +66,10 @@ function VoxelModel({ data, addVoxel }: VoxelModelProps) {
 export default function Page() {
   const [voxels, setVoxels] = useState(initialVoxelData);
 
-  const addVoxel = (e, position) => {
+  const addVoxel = (e: ThreeEvent<Mesh>, position: number[]) => {
     e.stopPropagation();
+
+    if(!e.face) return;
     
     const normal = e.face.normal.clone();
     const newVoxel = {
