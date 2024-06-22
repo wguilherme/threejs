@@ -3,6 +3,7 @@
 import { Canvas, useFrame } from "@react-three/fiber";
 import { useRef, useState } from "react";
 import { Mesh } from "three";
+import { useSpring, animated } from '@react-spring/three'
 
 function RotatingMesh() {
   const [active, setActive] = useState(false);
@@ -16,6 +17,7 @@ function RotatingMesh() {
 
   return (
     <mesh
+      position={[0, -1, 0]}
       ref={myMesh}
       scale={active ? 1.5 : 1}
       onClick={() => setActive(!active)}
@@ -38,18 +40,41 @@ function RotatingMesh() {
   );
 }
 
+function AnimatedSpringMesh() {
+  const [active, setActive] = useState(false);
+  const myMesh = useRef<Mesh>(null);
+  const { scale } = useSpring({ scale: active ? 1.5 : 1 })
+
+  useFrame(({ clock }) => {
+    if (myMesh.current) {
+      myMesh.current.rotation.x = clock.getElapsedTime();
+    }
+  });
+
+  return (
+    <animated.mesh scale={scale} onClick={() => setActive(!active)} ref={myMesh} 
+      position={[0, 1, 0]}
+    >
+      <boxGeometry />
+      <meshPhongMaterial color="royalblue" />
+    </animated.mesh>
+  );
+}
+
 export default function Home() {
   return (
     <main className="h-screen w-screen bg-slate-300">
       <Canvas
         camera={{
           position: [-6, 7, 7],
-          fov: 15,
+          fov: 20,
         }}
       >
+
         <ambientLight intensity={0.1} />
         <directionalLight color="red" position={[0, 2, 4]} />
         <RotatingMesh />
+        <AnimatedSpringMesh />
       </Canvas>
     </main>
   );
