@@ -13,7 +13,7 @@ const handlePointerOut = () => {
   document.body.style.cursor = 'default';
 };
 
-function RotatingMesh() {
+export function RotatingCubeMesh() {
   const [active, setActive] = useState(false);
   const myMesh = useRef<Mesh>(null);
 
@@ -49,7 +49,7 @@ function RotatingMesh() {
   );
 }
 
-function AnimatedSpringMesh() {
+export function RotatingCubeMeshSpring() {
   const [active, setActive] = useState(false);
   const myMesh = useRef<Mesh>(null);
   const { scale } = useSpring({ scale: active ? 1.5 : 1 })
@@ -86,8 +86,8 @@ export default function Home() {
 
         <ambientLight intensity={0.1} />
         <directionalLight color="red" position={[0, 2, 4]} />
-        <RotatingMesh/>
-        <AnimatedSpringMesh />
+        <RotatingCubeMesh/>
+        <RotatingCubeMeshSpring />
       </Canvas>
     </main>
   );
