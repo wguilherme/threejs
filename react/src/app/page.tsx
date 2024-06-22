@@ -5,9 +5,18 @@ import { useRef, useState } from "react";
 import { Mesh } from "three";
 import { useSpring, animated } from '@react-spring/three'
 
+const handlePointerOver = () => {
+  document.body.style.cursor = 'pointer';
+};
+
+const handlePointerOut = () => {
+  document.body.style.cursor = 'default';
+};
+
 function RotatingMesh() {
   const [active, setActive] = useState(false);
   const myMesh = useRef<Mesh>(null);
+
 
   useFrame(({ clock }) => {
     if (myMesh.current) {
@@ -26,15 +35,15 @@ function RotatingMesh() {
       onWheel={(e) => console.log('wheel spins')}
       onPointerUp={(e) => console.log('up')}
       onPointerDown={(e) => console.log('down')}
-      onPointerOver={(e) => console.log('over')}
-      onPointerOut={(e) => console.log('out')}
+      onPointerOver={handlePointerOver}
+      onPointerOut={handlePointerOut}
       onPointerEnter={(e) => console.log('enter')}
       onPointerLeave={(e) => console.log('leave')}
       onPointerMove={(e) => console.log('move')}
       onPointerMissed={() => console.log('missed')}
       onUpdate={(self) => console.log('props have been updated')}
     >
-      <boxGeometry />
+      <boxGeometry/>
       <meshStandardMaterial />
     </mesh>
   );
@@ -52,8 +61,12 @@ function AnimatedSpringMesh() {
   });
 
   return (
-    <animated.mesh scale={scale} onClick={() => setActive(!active)} ref={myMesh} 
+    <animated.mesh 
+      scale={scale} onClick={() => setActive(!active)} 
+      ref={myMesh} 
       position={[0, 1, 0]}
+      onPointerOver={handlePointerOver}
+      onPointerOut={handlePointerOut}
     >
       <boxGeometry />
       <meshPhongMaterial color="royalblue" />
@@ -73,7 +86,7 @@ export default function Home() {
 
         <ambientLight intensity={0.1} />
         <directionalLight color="red" position={[0, 2, 4]} />
-        <RotatingMesh />
+        <RotatingMesh/>
         <AnimatedSpringMesh />
       </Canvas>
     </main>
