@@ -1,11 +1,18 @@
 "use client";
 
 import { Canvas } from "@react-three/fiber";
+import { useState } from "react";
 
 export default function Home() {
+  const [active, setActive] = useState(false)
   return (
     <main className="h-screen w-screen bg-slate-300">
-      <Canvas>
+      <Canvas
+        camera={{
+          position: [-6, 7, 7],
+          fov: 15
+        }}
+      >
         <ambientLight intensity={0.1} />
         <directionalLight color="red" position={[0, 2, 4]} />
         <mesh
