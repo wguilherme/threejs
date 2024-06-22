@@ -2,15 +2,9 @@
 
 import { Canvas, ThreeEvent } from "@react-three/fiber";
 import { useRef, useState } from "react";
-import { Mesh, Vector3 } from "three";
+import { Color, Mesh, Vector3 } from "three";
 
-const handlePointerOver = () => {
-  document.body.style.cursor = 'pointer';
-};
 
-const handlePointerOut = () => {
-  document.body.style.cursor = 'default';
-};
 
 const initialVoxelData = [
   { x: 0, y: 0, z: 0, color: "#ff0000" },
@@ -28,17 +22,40 @@ interface VoxelComponentProps {
 
 function Voxel({ position, color, onClick }: VoxelComponentProps) {
   const meshRef = useRef<Mesh>(null);
+  const [hovered, setHovered] = useState(false);
+
+  const handlePointerOver = () => {
+    document.body.style.cursor = 'pointer';
+
+  };
+  
+  const handlePointerOut = () => {
+    document.body.style.cursor = 'default';
+    setHovered(false);
+  };
+
+
 
   return (
     <mesh
       ref={meshRef}
       position={position}
       onClick={(e) => onClick(e, position as any as number[])}
-      onPointerOver={handlePointerOver}
-      onPointerOut={handlePointerOut}
+      onPointerOver={
+        (e) => {
+          handlePointerOver();
+          setHovered(true);
+        }
+      }
+      onPointerOut={
+        (e) => {
+          handlePointerOut();
+          setHovered(false);
+        }
+      }
     >
-      <boxGeometry args={[1, 1, 1]} />
-      <meshStandardMaterial color={color} />
+        <boxGeometry args={[1, 1, 1]} />
+      <meshStandardMaterial color={hovered ? 'red' : 'white'} />
     </mesh>
   );
 }
@@ -90,8 +107,8 @@ export default function Page() {
           fov: 30,
         }}
       >
-        <ambientLight intensity={0.1} />
-        <directionalLight color="red" position={[0, 2, 4]} />
+        <ambientLight intensity={0.} />
+        <directionalLight  position={[0, 2, 4]} />
         <VoxelModel data={voxels} addVoxel={addVoxel} />
       </Canvas>
     </main>
