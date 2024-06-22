@@ -1,10 +1,13 @@
 "use client";
 
 import { Canvas } from "@react-three/fiber";
-import { useState } from "react";
+import { useRef, useState } from "react";
+import { Mesh } from "three";
 
 export default function Home() {
   const [active, setActive] = useState(false)
+  const myMesh = useRef<Mesh>(null);
+
   return (
     <main className="h-screen w-screen bg-slate-300">
       <Canvas
@@ -16,7 +19,9 @@ export default function Home() {
         <ambientLight intensity={0.1} />
         <directionalLight color="red" position={[0, 2, 4]} />
         <mesh
-            onClick={(e) => console.log('click')}
+            ref={myMesh}
+            scale={active ? 1.5 : 1} 
+            onClick={() => setActive(!active)} 
             onContextMenu={(e) => console.log('context menu')}
             onDoubleClick={(e) => console.log('double click')}
             onWheel={(e) => console.log('wheel spins')}
