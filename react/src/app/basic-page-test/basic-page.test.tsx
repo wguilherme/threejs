@@ -1,6 +1,6 @@
 import '@testing-library/jest-dom'
 import { render, screen } from '@testing-library/react'
-import BasicPage from '../src/app/BasicPage'
+import BasicPage from './BasicPage'
  
 describe('Page', () => {
   it('renders a heading', () => {
